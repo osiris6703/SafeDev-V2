@@ -1,0 +1,93 @@
+===============================================================================
+                       SAFEDEV V2 — OPERATIONAL USER MANUAL
+===============================================================================
+
+-------------------------------------------------------------------------------
+1. SAFEDEV V2 OVERVIEW
+-------------------------------------------------------------------------------
+SafeDev V2 is an AI-powered, security-guarded package manager for Python (pip) 
+and Node.js (npm). It automatically scans target packages using machine learning 
+classifiers BEFORE allowing installation or upgrade on developer machines.
+
+Key Technical Principles:
+- Pre-installation Security Boundary: Packages are statically analyzed BEFORE
+  installation or importation.
+- Unified Package Management CLI: Wraps pip and npm operations (`install`, 
+  `upgrade`, `uninstall`, `list`, `scan`) with built-in ML security protection.
+- Pure Static Analysis: Inspects package structure, AST patterns, metadata, and
+  source code metrics without running any untrusted package code.
+
+-------------------------------------------------------------------------------
+2. REPOSITORY LOCATION
+-------------------------------------------------------------------------------
+Root Directory:
+  D:\safedev\SafeDev-V2
+
+-------------------------------------------------------------------------------
+3. CLI COMMAND REFERENCE & SUBCOMMANDS
+-------------------------------------------------------------------------------
+
+### INSTALLATION COMMANDS (Scan + Install)
+  safedev install <package>           # Auto-detect ecosystem, scan & install
+  safedev install <package> -p        # Force PyPI ecosystem
+  safedev install <package> -n        # Force npm ecosystem
+  safedev install <package> -y        # Auto-confirm install if SAFE
+
+  # Ecosystem Shortcut Commands:
+  safedev -p <package>                # Scan & install PyPI package
+  safedev -n <package>                # Scan & install npm package
+
+### UPGRADE / UPDATE COMMANDS (Scan + Upgrade)
+  safedev upgrade <package>           # Scan latest version & upgrade (pip/npm)
+  safedev update <package>            # Alias for upgrade
+  safedev upgrade <package> -p        # Force PyPI upgrade
+  safedev upgrade <package> -n        # Force npm update
+
+### UNINSTALL / REMOVE COMMANDS
+  safedev uninstall <package>         # Uninstall package from environment
+  safedev remove <package>            # Alias for uninstall
+  safedev uninstall <package> -p      # Remove PyPI package (pip uninstall -y)
+  safedev uninstall <package> -n      # Remove npm package (npm uninstall)
+
+### LIST INSTALLED PACKAGES
+  safedev list                        # List installed Python packages (pip list)
+  safedev list -p                     # List installed Python packages
+  safedev list -n                     # List installed npm packages (npm list)
+
+### SECURITY SCAN ONLY (No Installation Prompt)
+  safedev scan <package>              # Scan package ONLY (no install)
+  safedev analyze <package>           # Alias for scan
+  safedev audit <package>             # Alias for scan
+  safedev scan <package> --format json # JSON output scan
+
+-------------------------------------------------------------------------------
+4. EXIT CODES
+-------------------------------------------------------------------------------
+Exit Code | Meaning          | Action / Description
+----------|------------------|---------------------------------------------------------
+0         | SAFE             | Package analyzed; malicious probability < threshold.
+1         | SUSPICIOUS       | Elevated threat risk, or CLI run with invalid args / --help.
+2         | MALICIOUS        | Threat detected; malicious probability >= operational threshold.
+3         | ANALYSIS_ERROR   | FAIL-CLOSED: Analysis failed (network, malformed zip, schema error).
+
+-------------------------------------------------------------------------------
+5. CHEAT SHEET
+-------------------------------------------------------------------------------
+# Install Python package securely:
+safedev -p requests
+
+# Install npm package securely:
+safedev -n express
+
+# Upgrade Python package securely:
+safedev upgrade requests -p
+
+# Uninstall package:
+safedev uninstall requests
+
+# List installed packages:
+safedev list
+
+# Security scan only:
+safedev scan requests
+===============================================================================

@@ -1,0 +1,6 @@
+# SafeDev V2 — Development & Test Dependencies
+-r requirements.txt
+pytest>=7.0.0
+pytest-cov>=4.0.0
+wheel>=0.40.0
+setuptools>=68.0.0

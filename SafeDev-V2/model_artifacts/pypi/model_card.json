@@ -1,0 +1,59 @@
+{
+    "model_name": "SafeDev PyPI XGBoost Malware Detector",
+    "model_version": "1.0.0",
+    "model_type": "XGBClassifier",
+    "framework": "xgboost",
+    "model_file": "model.json",
+    "feature_count": 68,
+    "feature_order_file": "feature_order.txt",
+    "preprocessing": {
+        "scaler": "NONE",
+        "note": "XGBoost was trained on RAW features. No StandardScaler. The scaler_statistics.csv is for the MLP model only and is NOT used for XGBoost inference."
+    },
+    "threshold": {
+        "value": 0.38,
+        "selection_dataset": "validation",
+        "optimization_metric": "F1",
+        "selection_method": "sweep 0.01-0.99 (197 points), select max F1, break ties by recall then precision",
+        "frozen_before_test": true
+    },
+    "labels": {
+        "0": "Benign",
+        "1": "Malicious"
+    },
+    "probability_meaning": "predict_proba[:, 1] = probability of malicious (class 1)",
+    "input_dtype": "float32",
+    "objective": "binary:logistic",
+    "hyperparameters": {
+        "n_estimators": 1200,
+        "max_depth": 5,
+        "learning_rate": 0.035,
+        "min_child_weight": 2,
+        "subsample": 0.85,
+        "colsample_bytree": 0.85,
+        "gamma": 0.0,
+        "reg_alpha": 0.05,
+        "reg_lambda": 1.0,
+        "tree_method": "hist",
+        "scale_pos_weight": "negative_count / positive_count from training set"
+    },
+    "dataset": {
+        "total_unique": 4518,
+        "train": 3187,
+        "validation": 660,
+        "test": 671,
+        "benign": 2016,
+        "malicious": 2502
+    },
+    "test_metrics": {
+        "note": "XGBoost metrics from safedev_pypi_xgboost_test_metrics.csv",
+        "accuracy": 0.988,
+        "precision": 0.984,
+        "recall": 0.995,
+        "f1": 0.989,
+        "roc_auc": 0.9995,
+        "pr_auc": 0.9996
+    },
+    "missing_value_handling": "All missing features default to 0.0. Non-finite values replaced with 0.0.",
+    "security_boundary": "No package code is ever executed, imported, or installed during analysis."
+}

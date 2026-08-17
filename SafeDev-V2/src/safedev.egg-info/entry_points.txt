@@ -1,0 +1,2 @@
+[console_scripts]
+safedev = safedev.cli.main:main

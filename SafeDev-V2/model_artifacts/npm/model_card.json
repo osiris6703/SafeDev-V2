@@ -1,0 +1,67 @@
+{
+    "model_name": "SafeDev npm GradientBoosting Malware Detector",
+    "model_version": "1.0.0",
+    "model_type": "GradientBoostingClassifier",
+    "framework": "scikit-learn",
+    "model_file": "model.joblib",
+    "scaler_file": "scaler.joblib",
+    "feature_count": 48,
+    "feature_order_file": "feature_order.json",
+    "preprocessing": {
+        "scaler": "StandardScaler",
+        "scaler_file": "scaler.joblib",
+        "fitted_on": "training set only (1120 samples)",
+        "with_mean": true,
+        "with_std": true,
+        "note": "StandardScaler is required for npm GradientBoosting. Fit on train only, transform all inputs."
+    },
+    "threshold": {
+        "value": 0.13,
+        "selection_dataset": "validation",
+        "optimization_method": "balanced FPR/FNR",
+        "constraints": "recall >= 0.90",
+        "selection_steps": "search 0.01-1.00 step 0.01, filter recall>=0.90, sort by abs(FPR-FNR) asc, (FPR+FNR)/2 asc, F1 desc",
+        "frozen_before_test": true
+    },
+    "labels": {
+        "0": "Benign",
+        "1": "Malicious"
+    },
+    "probability_meaning": "predict_proba[:, 1] = probability of malicious (class 1)",
+    "input_dtype": "float64",
+    "hyperparameters": {
+        "n_estimators": 300,
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "random_state": 42
+    },
+    "dataset": {
+        "total": 1607,
+        "train": 1120,
+        "validation": 239,
+        "test": 248,
+        "benign": 989,
+        "malicious": 618
+    },
+    "test_metrics": {
+        "accuracy": 0.8992,
+        "precision": 0.8148,
+        "recall": 0.9462,
+        "f1": 0.8756,
+        "f2": 0.9167,
+        "roc_auc": 0.9784,
+        "pr_auc": 0.9721,
+        "fpr": 0.1290,
+        "fnr": 0.0538
+    },
+    "features_removed_from_original_53": [
+        "archive_size_bytes",
+        "file_count",
+        "json_file_count",
+        "markdown_file_count",
+        "has_package_json"
+    ],
+    "removal_reason": "archive_size_bytes and file_count were perfectly separating artifacts (all malicious=0, all benign>0). json_file_count, markdown_file_count, has_package_json were constant across the dataset.",
+    "missing_value_handling": "All missing features default to 0 or 0.0 via empty_feature_record(). NaN/Inf raises error.",
+    "security_boundary": "No package code is ever executed, imported, or installed during analysis."
+}
